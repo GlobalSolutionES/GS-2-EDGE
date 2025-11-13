@@ -20,7 +20,7 @@ O **WorkFuture Hub** é um sistema inteligente de monitoramento ambiental IoT pr
 - **Buzzer** e **LEDs** – alertas sonoros e visuais
 - **LCD I2C** – exibe leituras e ícones personalizados de cada sensor
 
-![Montagem do Projeto](dispWokGS.png)
+![Montagem do Projeto](/images/dispWokGS.png)
 
 ---
 ### 🌐 Arquitetura IoT com FIWARE
@@ -38,7 +38,7 @@ O sistema integra **ESP32** com FIWARE, utilizando **IoT Agent MQTT**, **Orion C
 7. **Backend Node.js/Express**: processa dados, aplica regras, disponibiliza APIs
 8. **Frontend Web**: dashboard responsivo com gráficos em tempo real e envio de comandos MQTT
 
-![Arquitetura do Projeto](arqWorkFuture.png)
+![Arquitetura do Projeto](/images/arqWorkFuture.png)
 
 ---
 ### ⚙️ Funcionalidades do Dispositivo e Sistema
@@ -64,19 +64,19 @@ O sistema integra **ESP32** com FIWARE, utilizando **IoT Agent MQTT**, **Orion C
 # 📊 Dashboard Dinâmico
 
 ### Tela Principal
-![Tela Principal](telainiGS.png)
+![Tela Principal](/images/telainiGS.png)
 
-### Gráfico de Temperatura e Umidade Luminosidade
-![Gráfico Sensor](graficoTempUmi.png)
+### Gráficos de Temperatura e Umidade 
+![Gráfico Sensor](/images/graficoTempUmi.png)
 
 ### Gráfico de Luminosidade e Presença 
-![Gráfico Luminosidade](graficoLumi.png)
+![Gráfico Luminosidade](/images/graficoLumi.png)
 
 ### Gráfico de Ruído
-![Gráfico Ruído](graficoRuido.png)
+![Gráfico Ruído](/images/graficoRuido.png)
 
 ### Gráfico do Índice de Eficiência Energética
-![Gráfico Eficiência](graficoEficiencia.png)
+![Gráfico Eficiência](/images/graficoEficiencia.png)
 
 ---
 ## Funcionamento do Sistema
@@ -129,7 +129,7 @@ ESP32 → MQTT → Backend → Frontend → Comandos MQTT → ESP32
 - Verificação de logs no Serial Monitor
 
 ### Testes da Integração (Postman + FIWARE)
-- Criação de entidades no Orion Context Broker
+- Criação de entidade no Orion Context Broker
 - Consulta de dados em tempo real
 - Verificação de histórico via STH-Comet
 - Simulação de envio de comandos MQTT
