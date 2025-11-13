@@ -56,9 +56,9 @@ O sistema integra **ESP32** com FIWARE, utilizando **IoT Agent MQTT**, **Orion C
 
 [Vídeo Explicação](#)  
 
-## 🎥 Demonstração do Sistema em Operação Simulada
+## 🎥 Demonstração do Sistema em Operação 
 
-[Vídeo Demonstração](#)
+[Vídeo Demonstração](https://youtu.be/R4_CbwGznS8)
 
 ---
 # 📊 Dashboard Dinâmico
@@ -133,7 +133,7 @@ ESP32 → MQTT → Backend → Frontend → Comandos MQTT → ESP32
 - Consulta de dados em tempo real
 - Verificação de histórico via STH-Comet
 - Simulação de envio de comandos MQTT
-- [Vídeo Teste com Postman](#)
+- [Vídeo Teste com Postman](https://youtu.be/J4_6sc8huPc)
 
 
 ---
@@ -157,8 +157,9 @@ ESP32 → MQTT → Backend → Frontend → Comandos MQTT → ESP32
 ## 📎 Links Importantes
 - 🔗 [Projeto no Wokwi](https://wokwi.com/projects/447202057679571969)  
 - 🎥 [Vídeo Explicativo](#)  
-- 🎥 [Vídeo Demonstração](#)  
-- 📂 [Collection Postman](#)
+- 🎥 [Vídeo Demonstração](https://youtu.be/R4_CbwGznS8)
+- 🎥 [Vídeo Teste com Postman](https://youtu.be/J4_6sc8huPc) 
+- 📂 [Collection Postman](gs2Fiware.json)
 
 ---
 ## 📖 Instruções de Uso (Simulação no Wokwi)
