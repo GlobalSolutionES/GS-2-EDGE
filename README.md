@@ -155,7 +155,7 @@ ESP32 → MQTT → Backend → Frontend → Comandos MQTT → ESP32
 
 ---
 ## 📎 Links Importantes
-- 🔗 [Projeto no Wokwi](#)  
+- 🔗 [Projeto no Wokwi](https://wokwi.com/projects/447202057679571969)  
 - 🎥 [Vídeo Explicativo](#)  
 - 🎥 [Vídeo Demonstração](#)  
 - 📂 [Collection Postman](#)
