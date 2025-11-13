@@ -1,0 +1,973 @@
+{
+	"info": {
+		"_postman_id": "8af12321-1427-4b0f-9b04-5f7f2d06bbc8",
+		"name": "FIWARE Descomplicado - WorkFuture Hub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "179747"
+	},
+	"item": [
+		{
+			"name": "IOT Agent MQTT - WorkFuture Hub",
+			"item": [
+				{
+					"name": "1.1 Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/about",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"about"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Provisioning a Service Group for MQTT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"services\": [\n   {\n     \"apikey\":      \"TEF\",               // Chave de acesso para o serviço (API Key)\n     \"cbroker\":     \"http://{{url}}:1026\", // URL do Orion Context Broker associado ao serviço\n     \"entity_type\": \"Thing\",             // Tipo de entidade associado ao serviço\n     \"resource\":    \"\"                   // Recurso associado ao serviço (pode estar vazio)\n   }\n ]\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:4041/iot/services",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.1 Health Check Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/services",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.1 Delete a Service Group",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{url}}:4041/iot/services/?resource=&apikey=TEF",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "resource",
+									"value": "",
+									"description": "The path that the IoT Agent had been listening on"
+								},
+								{
+									"key": "apikey",
+									"value": "TEF"
+								}
+							]
+						},
+						"description": "This example removes a provisioned service group by making a DELETE request to the `/iot/services/` endpoint.\n\nIt means that requests to `http://iot-agent:7896/iot/d?i=<device_id>&k=4jggokgpepnvsb2uv4s40d59ov`\n(where the IoT Agent is listening for **Northbound** communications) should no longer be processed by the IoT Agent. \nThe `apiKey` and `resource` parameters must be supplied in order to identify the service group to be deleted."
+					},
+					"response": []
+				},
+				{
+					"name": "3. Provisioning WorkFuture Hub Device",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"devices\": [\n    {\n      \"device_id\": \"workfuture001\",         // Identificador único do dispositivo\n      \"entity_name\": \"urn:ngsi-ld:WorkFuture:001\",   // Nome da entidade para o dispositivo (formato URN)\n      \"entity_type\": \"WorkFuture\",          // Tipo da entidade (neste caso, \"WorkFuture\")\n      \"protocol\": \"PDI-IoTA-UltraLight\",  // Protocolo usado para a comunicação (no exemplo, PDI-IoTA-UltraLight)\n      \"transport\": \"MQTT\",            // Método de transporte (neste caso, MQTT)\n\n      // Lista de comandos que o dispositivo pode receber\n      \"commands\": [\n        { \"name\": \"system_on\", \"type\": \"command\" },  // Comando para ligar sistema\n        { \"name\": \"system_off\", \"type\": \"command\" }  // Comando para desligar sistema\n      ],\n\n      // Lista de atributos associados ao dispositivo\n      \"attributes\": [\n        { \"object_id\": \"temperature\", \"name\": \"temperature\", \"type\": \"Float\" }, // Atributo de temperatura\n        { \"object_id\": \"humidity\", \"name\": \"humidity\", \"type\": \"Float\" }, // Atributo de umidade\n        { \"object_id\": \"light\", \"name\": \"light\", \"type\": \"Integer\" }, // Atributo de luminosidade\n        { \"object_id\": \"presence\", \"name\": \"presence\", \"type\": \"Boolean\" }, // Atributo de presença\n        { \"object_id\": \"noise_level\", \"name\": \"noise_level\", \"type\": \"Integer\" }, // Atributo de nível de ruído\n        { \"object_id\": \"energy_efficiency\", \"name\": \"energy_efficiency\", \"type\": \"Float\" } // Atributo de eficiência energética\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Registering WorkFuture Hub Commands",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"WorkFuture Hub Commands\", // Descrição do serviço de notificação\n  \"dataProvided\": {\n    \"entities\": [\n      {\n        \"id\": \"urn:ngsi-ld:WorkFuture:001\", \"type\": \"WorkFuture\" // Definição da entidade a ser monitorada\n      }\n    ],\n    \"attrs\": [\"system_on\", \"system_off\"] // Atributos a serem monitorados (no caso, comandos do sistema)\n  },\n  \"provider\": {\n    \"http\": { \"url\": \"http://{{url}}:4041\" }, // URL do serviço a ser notificado\n    \"legacyForwarding\": true // Indicação para encaminhar notificações de forma legada (se aplicável)\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/registrations",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. List all Devices Provisioned",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Activating WorkFuture Hub System",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"system_on\": {\n      \"type\" : \"command\",\n      \"value\" : \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001/attrs",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attrs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Get WorkFuture Hub Temperature",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001/attrs/temperature",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attrs",
+								"temperature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Get WorkFuture Hub Energy Efficiency",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001/attrs/energy_efficiency",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attrs",
+								"energy_efficiency"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Get All WorkFuture Hub Attributes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10. Delete WorkFuture Hub in IoT Agent",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/devices/workfuture001",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices",
+								"workfuture001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11. Delete WorkFuture Hub in Orion",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "WorkFuture",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "STH-Comet - WorkFuture Hub",
+			"item": [
+				{
+					"name": "1. Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:8666/version",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "8666",
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Subscribe to Multiple Attributes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Notify STH-Comet of all WorkFuture Hub sensor changes\", // Descrição da notificação\r\n  \"subject\": {\r\n    \"entities\": [\r\n      {\r\n        \"id\": \"urn:ngsi-ld:WorkFuture:001\",\r\n        \"type\": \"WorkFuture\"\r\n      }\r\n    ],\r\n    \"condition\": { \"attrs\": [\"temperature\", \"humidity\", \"light\", \"energy_efficiency\"] } // Condição para acionar a notificação (múltiplos atributos)\r\n  },\r\n  \"notification\": {\r\n    \"http\": {\r\n      \"url\": \"http://{{url}}:8666/notify\" // URL para notificação do STH-Comet\r\n    },\r\n    \"attrs\": [\r\n      \"temperature\", \"humidity\", \"light\", \"energy_efficiency\" // Atributos a serem notificados\r\n    ],\r\n    \"attrsFormat\": \"legacy\" // Formato dos atributos a ser notificado (legado)\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/subscriptions",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Request Temperature History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:8666/STH/v1/contextEntities/type/WorkFuture/id/urn:ngsi-ld:WorkFuture:001/attributes/temperature?lastN=30",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "8666",
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								"WorkFuture",
+								"id",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attributes",
+								"temperature"
+							],
+							"query": [
+								{
+									"key": "lastN",
+									"value": "30",
+									"description": "Especifica o número de resultados mais recentes a serem recuperados. Neste caso, está configurado como 30, o que resultará na recuperação dos 30 dados mais recentes."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Request Energy Efficiency History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:8666/STH/v1/contextEntities/type/WorkFuture/id/urn:ngsi-ld:WorkFuture:001/attributes/energy_efficiency?lastN=30",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "8666",
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								"WorkFuture",
+								"id",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attributes",
+								"energy_efficiency"
+							],
+							"query": [
+								{
+									"key": "lastN",
+									"value": "30",
+									"description": "Especifica o número de resultados mais recentes a serem recuperados. Neste caso, está configurado como 30, o que resultará na recuperação dos 30 dados mais recentes."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Request All Attributes History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:8666/STH/v1/contextEntities/type/WorkFuture/id/urn:ngsi-ld:WorkFuture:001?lastN=20",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "8666",
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								"WorkFuture",
+								"id",
+								"urn:ngsi-ld:WorkFuture:001"
+							],
+							"query": [
+								{
+									"key": "lastN",
+									"value": "20",
+									"description": "Especifica o número de resultados mais recentes a serem recuperados. Neste caso, está configurado como 20, o que resultará na recuperação dos 20 dados mais recentes."
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orion Context Broker - WorkFuture Hub",
+			"item": [
+				{
+					"name": "1.Version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:1026/version",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.Create WorkFuture Entity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"urn:ngsi-ld:WorkFuture:001\",\r\n  \"type\": \"WorkFuture\",\r\n  \"temperature\": {\r\n  \"type\": \"Float\",\r\n  \"value\": 0\r\n    }\r\n,\r\n  \"humidity\": {\r\n  \"type\": \"Float\",\r\n  \"value\": 0\r\n\t},\r\n  \"light\": {\r\n  \"type\": \"Integer\",\r\n  \"value\": 0\r\n\t},\r\n  \"presence\": {\r\n  \"type\": \"Boolean\",\r\n  \"value\": false\r\n\t},\r\n  \"noise_level\": {\r\n  \"type\": \"Integer\",\r\n  \"value\": 0\r\n\t},\r\n  \"energy_efficiency\": {\r\n  \"type\": \"Float\",\r\n  \"value\": 0\r\n\t}\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						},
+						"description": "cria entidade WorkFuture Hub"
+					},
+					"response": []
+				},
+				{
+					"name": "3.Get All Entities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.Update WorkFuture Entity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"temperature\": {\r\n  \"type\": \"Float\",\r\n  \"value\": 25.5\r\n    }\r\n,\r\n  \"humidity\": {\r\n  \"type\": \"Float\",\r\n  \"value\": 60.2\r\n\t},\r\n  \"light\": {\r\n  \"type\": \"Integer\",\r\n  \"value\": 75\r\n\t},\r\n  \"presence\": {\r\n  \"type\": \"Boolean\",\r\n  \"value\": true\r\n\t},\r\n  \"energy_efficiency\": {\r\n  \"type\": \"Float\",\r\n  \"value\": 0.85\r\n\t}\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001/attrs",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attrs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.Selective Update Temperature",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "23.7"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001/attrs/temperature/value",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attrs",
+								"temperature",
+								"value"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.Selective Update Energy Efficiency",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "0.92"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001/attrs/energy_efficiency/value",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001",
+								"attrs",
+								"energy_efficiency",
+								"value"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.Delete WorkFuture Entity",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/urn:ngsi-ld:WorkFuture:001",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:WorkFuture:001"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "WorkFuture",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
