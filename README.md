@@ -64,13 +64,16 @@ O sistema integra **ESP32** com FIWARE, utilizando **IoT Agent MQTT**, **Orion C
 # 📊 Dashboard Dinâmico
 
 ### Tela Principal
-![Tela Principal](telaini.png)
+![Tela Principal](telainiGS.png)
 
-### Gráfico de Temperatura, Umidade e Luminosidade
-![Gráfico Sensor](graficoTemp.png)
+### Gráfico de Temperatura e Umidade Luminosidade
+![Gráfico Sensor](graficoTempUmi.png)
 
-### Gráfico de Presença e Ruído
-![Gráfico Presença](graficoPresenca.png)
+### Gráfico de Luminosidade e Presença 
+![Gráfico Luminosidade](graficoLumi.png)
+
+### Gráfico de Ruído
+![Gráfico Ruído](graficoRuido.png)
 
 ### Gráfico do Índice de Eficiência Energética
 ![Gráfico Eficiência](graficoEficiencia.png)
