@@ -54,7 +54,7 @@ O sistema integra **ESP32** com FIWARE, utilizando **IoT Agent MQTT**, **Orion C
 ---
 ## 🎥 Apresentação do Projeto
 
-[Vídeo Explicação](#)  
+[Vídeo Explicação](https://youtu.be/0VJ8yAjWPTs?si=VxVZlHOG66s8ihkQ)  
 
 ## 🎥 Demonstração do Sistema em Operação 
 
@@ -205,3 +205,4 @@ Código e Arquitetura orientados pelo professor Fábio Henrique Cabrini
 
 **Autoras:** Geovana Maria da Silva Cardoso e Mariana Silva do Egito Moreira
 
+Projeto feito como entrega da Global Solution 2025 da disciplina Edge Computing and Computer Systems do curso Engenharia de Software da FIAP.
