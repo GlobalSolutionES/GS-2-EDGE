@@ -3,7 +3,7 @@
 O **WorkFuture Hub** é um sistema inteligente de monitoramento ambiental IoT projetado para **avaliar e otimizar as condições de trabalho em ambientes corporativos**, medindo temperatura, umidade, luminosidade, presença e ruído, e calculando um **índice de eficiência energética**. O sistema gera alertas locais e remotos quando parâmetros saem da faixa ideal, promovendo **saúde, bem-estar e eficiência organizacional**.
 
 ---
-### 📋 Autoras
+### 📋 Equipe Level Up
 
 - Geovana Maria da Silva Cardoso - 566254  
 - Mariana Silva do Egito Moreira - 562544  
